@@ -1,0 +1,8 @@
+node_modules
+dist
+*.log
+.vercel
+*.tsbuildinfo
+.scratch
+screenshots
+scratch_test.mjs
