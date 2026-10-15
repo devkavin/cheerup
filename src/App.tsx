@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
-import { MotionConfig } from 'motion/react'
+import { motion, MotionConfig } from 'motion/react'
 import { BurstProvider } from './components/BurstProvider'
 import { CrochetDefs } from './components/CrochetDefs'
 import { ProgressDots } from './components/ProgressDots'
 import { SceneTransition } from './components/SceneTransition'
+import { SoundToggle } from './components/SoundToggle'
+import { ComplaintShredder } from './components/ComplaintShredder'
+import { ComfortDrawer } from './components/ComfortDrawer'
 import { WelcomeScene } from './scenes/WelcomeScene'
 import { BunnyScene } from './scenes/BunnyScene'
 import { LetterScene } from './scenes/LetterScene'
@@ -37,6 +40,8 @@ function loadProgress(): Progress {
 export default function App() {
   const [progress, setProgress] = useState<Progress>(loadProgress)
   const [direction, setDirection] = useState<1 | -1>(1)
+  const [shredderOpen, setShredderOpen] = useState(false)
+  const [comfortOpen, setComfortOpen] = useState(false)
 
   useEffect(() => {
     try {
@@ -79,7 +84,47 @@ export default function App() {
             className="pointer-events-none fixed inset-[9px] z-40 rounded-[1.7rem] border-2 border-dashed border-rose/45"
           />
         </div>
+
+        {/* Top Header Floating Controls */}
+        <div className="pointer-events-none fixed left-3 sm:left-5 top-0 z-50 flex items-center gap-1.5 pt-[max(0.75rem,env(safe-area-inset-top))]">
+          <motion.button
+            type="button"
+            onClick={() => setShredderOpen(true)}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            aria-label="Open Complaint Shredder"
+            title="School Drama Shredder"
+            className="pointer-events-auto flex h-8 w-8 sm:h-auto sm:w-auto items-center justify-center gap-1.5 rounded-full border-2 border-white/80 bg-cream/90 px-0 sm:px-3 sm:py-1.5 text-xs font-semibold text-berry-deep shadow-[0_4px_14px_-4px_rgba(181,86,111,0.35)] backdrop-blur-sm transition-colors hover:bg-cream"
+          >
+            <span className="text-sm">✂️</span>
+            <span className="hidden sm:inline">Shred Drama</span>
+          </motion.button>
+
+          <motion.button
+            type="button"
+            onClick={() => setComfortOpen(true)}
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.92 }}
+            aria-label="Open Bad Day Emergency Protocol"
+            title="Bad Day Comfort Checklist"
+            className="pointer-events-auto flex h-8 w-8 sm:h-auto sm:w-auto items-center justify-center gap-1.5 rounded-full border-2 border-white/80 bg-cream/90 px-0 sm:px-3 sm:py-1.5 text-xs font-semibold text-berry-deep shadow-[0_4px_14px_-4px_rgba(181,86,111,0.35)] backdrop-blur-sm transition-colors hover:bg-cream"
+          >
+            <span className="text-sm">☕</span>
+            <span className="hidden sm:inline">Comfort Kit</span>
+          </motion.button>
+        </div>
+
+        {/* Story Progress */}
         <ProgressDots current={progress.current} furthest={progress.furthest} onSelect={goTo} />
+
+        {/* Sound Toggle (Top Right) */}
+        <div className="pointer-events-none fixed right-3 sm:right-5 top-0 z-50 flex items-center pt-[max(0.75rem,env(safe-area-inset-top))]">
+          <SoundToggle />
+        </div>
+
+        {/* Interactive Modals */}
+        <ComplaintShredder isOpen={shredderOpen} onClose={() => setShredderOpen(false)} />
+        <ComfortDrawer isOpen={comfortOpen} onClose={() => setComfortOpen(false)} />
       </BurstProvider>
     </MotionConfig>
   )

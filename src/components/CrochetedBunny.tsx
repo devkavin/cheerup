@@ -120,12 +120,15 @@ function Mouth({ kind }: { kind: MouthKind }) {
   }
 }
 
+export type BunnyAccessory = 'none' | 'strawberry' | 'frog' | 'glasses' | 'crown'
+
 interface CrochetedBunnyProps {
   mood?: BunnyMood
   /** Deeper blush + little blush lines. */
   blush?: boolean
   /** Turn off idle breathing / ear wiggles. */
   still?: boolean
+  accessory?: BunnyAccessory
   className?: string
 }
 
@@ -133,7 +136,7 @@ interface CrochetedBunnyProps {
  * Sir Fluffington III. A hand-built SVG plushie with stitch-textured "yarn" fills,
  * floppy ears, scarf, flower and an expressive face that follows `mood`.
  */
-export function CrochetedBunny({ mood = 'idle', blush = false, still = false, className }: CrochetedBunnyProps) {
+export function CrochetedBunny({ mood = 'idle', blush = false, still = false, accessory = 'none', className }: CrochetedBunnyProps) {
   const face = FACE[mood]
   const canBlink = face.eyes === 'open' || face.eyes === 'wide' || face.eyes === 'side' || face.eyes === 'wink'
   const perk = mood === 'surprised'
@@ -221,16 +224,18 @@ export function CrochetedBunny({ mood = 'idle', blush = false, still = false, cl
       {/* head */}
       <Stitched el="ellipse" cx={120} cy={145} rx={78} ry={64} fill={YARN} stroke={OUTLINE} />
 
-      {/* little crocheted flower */}
-      <g transform="translate(66 98)">
-        {[0, 72, 144, 216, 288].map((a) => (
-          <g key={a} transform={`rotate(${a}) translate(0 -8)`}>
-            <circle r={6.6} fill="#ffd2b8" stroke="#e8a98a" strokeWidth={1.4} />
-            <circle r={6.6} fill="url(#stitchV)" />
-          </g>
-        ))}
-        <circle r={5} fill="#fff3c4" stroke="#e8c870" strokeWidth={1.4} />
-      </g>
+      {/* little crocheted flower (default) */}
+      {accessory !== 'crown' && (
+        <g transform="translate(66 98)">
+          {[0, 72, 144, 216, 288].map((a) => (
+            <g key={a} transform={`rotate(${a}) translate(0 -8)`}>
+              <circle r={6.6} fill="#ffd2b8" stroke="#e8a98a" strokeWidth={1.4} />
+              <circle r={6.6} fill="url(#stitchV)" />
+            </g>
+          ))}
+          <circle r={5} fill="#fff3c4" stroke="#e8c870" strokeWidth={1.4} />
+        </g>
+      )}
 
       {/* cheeks */}
       <motion.g
@@ -265,6 +270,87 @@ export function CrochetedBunny({ mood = 'idle', blush = false, still = false, cl
       <ellipse cx={120} cy={162} rx={6} ry={4.5} fill="#e58ca0" />
       <ellipse cx={118.5} cy={160.5} rx={1.8} ry={1.1} fill="#fff" opacity={0.7} />
       <Mouth kind={face.mouth} />
+
+      {/* --- WARDROBE ACCESSORIES --- */}
+
+      {/* 1. Strawberry Beret */}
+      {accessory === 'strawberry' && (
+        <g transform="translate(136 78) rotate(16)">
+          <path d="M-22 8 Q0 -28 24 6 Q16 26 -2 24 Q-22 22 -22 8Z" fill="#f25f7c" stroke="#c43b57" strokeWidth={2.4} strokeLinejoin="round" />
+          <path d="M-22 8 Q0 -28 24 6 Q16 26 -2 24 Q-22 22 -22 8Z" fill="url(#stitchV)" />
+          {/* stem */}
+          <path d="M2 -18 Q6 -26 12 -25" stroke="#7eb77f" strokeWidth={3} fill="none" strokeLinecap="round" />
+          <path d="M-5 -16 L2 -12 L9 -17 L3 -8 L-5 -16Z" fill="#9bd29c" stroke="#68a069" strokeWidth={1.5} />
+          {/* seeds */}
+          <g fill="#fff" opacity={0.8}>
+            <circle cx="-10" cy="4" r="1.2" />
+            <circle cx="2" cy="0" r="1.2" />
+            <circle cx="12" cy="8" r="1.2" />
+            <circle cx="-2" cy="14" r="1.2" />
+            <circle cx="8" cy="16" r="1.2" />
+          </g>
+        </g>
+      )}
+
+      {/* 2. Frog Hood */}
+      {accessory === 'frog' && (
+        <g transform="translate(120 90)">
+          {/* Beanie band */}
+          <path d="M-54 14 Q0 -16 54 14 Q40 -26 0 -26 Q-40 -26 -54 14Z" fill="#8bc38c" stroke="#5d965e" strokeWidth={2.4} strokeLinejoin="round" />
+          <path d="M-54 14 Q0 -16 54 14 Q40 -26 0 -26 Q-40 -26 -54 14Z" fill="url(#stitchV)" />
+          {/* Frog eyes */}
+          <g transform="translate(-28 -20)">
+            <circle cx="0" cy="0" r="13" fill="#8bc38c" stroke="#5d965e" strokeWidth={2.2} />
+            <circle cx="0" cy="0" r="13" fill="url(#stitchV)" />
+            <circle cx="0" cy="0" r="7.5" fill="#fff" />
+            <circle cx="0" cy="0" r="4.2" fill="#364937" />
+            <circle cx="-1.8" cy="-1.8" r="1.5" fill="#fff" />
+          </g>
+          <g transform="translate(28 -20)">
+            <circle cx="0" cy="0" r="13" fill="#8bc38c" stroke="#5d965e" strokeWidth={2.2} />
+            <circle cx="0" cy="0" r="13" fill="url(#stitchV)" />
+            <circle cx="0" cy="0" r="7.5" fill="#fff" />
+            <circle cx="0" cy="0" r="4.2" fill="#364937" />
+            <circle cx="-1.8" cy="-1.8" r="1.5" fill="#fff" />
+          </g>
+        </g>
+      )}
+
+      {/* 3. Reading Glasses */}
+      {accessory === 'glasses' && (
+        <g transform="translate(120 148)" stroke="#d4943a" strokeWidth={3} fill="none" strokeLinecap="round">
+          {/* left rim */}
+          <circle cx="-30" cy="0" r="17" fill="rgba(255,255,255,0.25)" />
+          {/* right rim */}
+          <circle cx="30" cy="0" r="17" fill="rgba(255,255,255,0.25)" />
+          {/* bridge */}
+          <path d="M-13 -3 Q0 -9 13 -3" />
+          {/* arms */}
+          <path d="M-47 -2 L-66 -10 M47 -2 L66 -10" />
+          {/* shine */}
+          <path d="M-36 -8 L-28 -4 M24 -8 L32 -4" stroke="#fff" strokeWidth={1.8} opacity={0.8} />
+        </g>
+      )}
+
+      {/* 4. Flower Crown */}
+      {accessory === 'crown' && (
+        <g transform="translate(120 102)">
+          {/* vine */}
+          <path d="M-52 6 Q0 -12 52 6" fill="none" stroke="#7eb77f" strokeWidth={3} strokeLinecap="round" />
+          {/* flowers */}
+          {[-42, -21, 0, 21, 42].map((x, idx) => {
+            const colors = ['#f8b7c8', '#ffd2b8', '#fff3c4', '#cdb8ea', '#f8b7c8']
+            const c = colors[idx]
+            return (
+              <g key={x} transform={`translate(${x} ${Math.abs(x) * 0.14 - 4})`}>
+                <circle r={6.2} fill={c} stroke="#b5566f" strokeWidth={1.2} />
+                <circle r={6.2} fill="url(#stitchV)" />
+                <circle r={2.5} fill="#fff" />
+              </g>
+            )
+          })}
+        </g>
+      )}
     </motion.svg>
   )
 }

@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { AnimatePresence, motion, useAnimationControls, type TargetAndTransition } from 'motion/react'
 import { content } from '../content'
-import { CrochetedBunny, type BunnyMood } from '../components/CrochetedBunny'
+import { CrochetedBunny, type BunnyMood, type BunnyAccessory } from '../components/CrochetedBunny'
 import { PillButton } from '../components/PillButton'
 import { SceneShell } from '../components/SceneShell'
 import { SpeechBubble } from '../components/SpeechBubble'
 import { useBurst } from '../components/BurstProvider'
 import { SparkleIcon } from '../components/Shapes'
+import { sound } from '../services/sound'
 
 interface Props {
   onNext: () => void
@@ -78,6 +79,14 @@ function HeartSparkle() {
   )
 }
 
+const WARDROBE_ITEMS: { id: BunnyAccessory; label: string; icon: string; speech: string }[] = [
+  { id: 'none', label: 'Classic', icon: '🐰', speech: "Back to original fluff." },
+  { id: 'strawberry', label: 'Berry Beret', icon: '🍓', speech: "I look very distinguished. 12/10." },
+  { id: 'frog', label: 'Frog Beanie', icon: '🐸', speech: "Ribbit. Does this cure your bad day?" },
+  { id: 'glasses', label: 'Smart Specs', icon: '👓', speech: "Officially diagnosing your day as 100% nonsense." },
+  { id: 'crown', label: 'Flower Crown', icon: '🌸', speech: "I'm cute, but you're still prettier." },
+]
+
 /** Scene 2: Sir Fluffington III. */
 export function BunnyScene({ onNext }: Props) {
   const { burst } = useBurst()
@@ -85,6 +94,7 @@ export function BunnyScene({ onNext }: Props) {
   const [pats, setPats] = useState(0)
   const [bubble, setBubble] = useState<Bubble | null>(null)
   const [mood, setMood] = useState<BunnyMood>('idle')
+  const [accessory, setAccessory] = useState<BunnyAccessory>('none')
   const patsRef = useRef(0)
   const lastExtra = useRef<string | null>(null)
   const moodTimer = useRef<number | undefined>(undefined)
@@ -100,6 +110,7 @@ export function BunnyScene({ onNext }: Props) {
   }, [])
 
   const handlePat = (e: MouseEvent<HTMLButtonElement>) => {
+    sound.playPurr()
     const n = patsRef.current + 1
     patsRef.current = n
     setPats(n)
@@ -133,6 +144,18 @@ export function BunnyScene({ onNext }: Props) {
         window.setTimeout(() => burst(stageRef.current, { kind: 'sparkle', count: 10 }), 900),
       )
     }
+  }
+
+  const handleDressUp = (item: typeof WARDROBE_ITEMS[0], e: MouseEvent<HTMLButtonElement>) => {
+    setAccessory(item.id)
+    sound.playChime(784, 0.3)
+    sound.vibrate(15)
+    burst(e, { kind: 'sparkle', count: 5 })
+    setMood('smug')
+    setBubble({ id: Date.now(), text: item.speech, special: false })
+    controls.start(REACTIONS.smug)
+    window.clearTimeout(moodTimer.current)
+    moodTimer.current = window.setTimeout(() => setMood('idle'), 2600)
   }
 
   const blushing = mood === 'blush'
@@ -182,10 +205,34 @@ export function BunnyScene({ onNext }: Props) {
             aria-label="Pat Sir Fluffington"
             className="relative block aspect-[4/5] h-[min(30dvh,16rem)] rounded-[2rem]"
           >
-            <CrochetedBunny mood={mood} blush={blushing} className="h-full w-full" />
+            <CrochetedBunny mood={mood} blush={blushing} accessory={accessory} className="h-full w-full" />
           </button>
         </motion.div>
         <AnimatePresence>{pats === content.bunny.secretTapsNeeded && <HeartSparkle key="sparkle" />}</AnimatePresence>
+      </div>
+
+      {/* Wardrobe accessories bar */}
+      <div className="flex flex-col items-center gap-1">
+        <div className="flex items-center justify-center gap-1.5 rounded-full border border-rose/30 bg-cream/80 px-2 py-1 shadow-xs backdrop-blur-xs">
+          <span className="font-hand pr-1 text-sm font-semibold text-berry-deep">Wardrobe:</span>
+          {WARDROBE_ITEMS.map((item) => {
+            const isSelected = accessory === item.id
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={(e) => handleDressUp(item, e)}
+                aria-label={`Dress with ${item.label}`}
+                title={item.label}
+                className={`flex h-7 w-7 items-center justify-center rounded-full text-sm transition-all ${
+                  isSelected ? 'bg-berry text-white shadow-xs scale-110' : 'bg-white/60 hover:bg-rose/30 opacity-80'
+                }`}
+              >
+                {item.icon}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       <div className="flex min-h-[6.5rem] flex-col items-center gap-3">

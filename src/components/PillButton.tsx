@@ -1,5 +1,6 @@
 import { motion, type HTMLMotionProps } from 'motion/react'
 import { useBurst, type BurstKind } from './BurstProvider'
+import { sound } from '../services/sound'
 
 interface PillButtonProps extends HTMLMotionProps<'button'> {
   variant?: 'primary' | 'soft'
@@ -25,6 +26,8 @@ export function PillButton({
       whileHover={{ y: -3, scale: 1.04, transition: { type: 'spring', stiffness: 520, damping: 11 } }}
       whileTap={{ y: 5, scale: 0.97, transition: { duration: 0.06 } }}
       onClick={(e) => {
+        sound.vibrate(10)
+        sound.playChime(659.25, 0.25)
         if (burstKind) burst(e, { kind: burstKind, count: burstCount })
         onClick?.(e)
       }}

@@ -7,6 +7,7 @@ import { SceneShell } from '../components/SceneShell'
 import { SecretStar } from '../components/SecretStar'
 import { useBurst } from '../components/BurstProvider'
 import { YarnBallArt, YarnBallFrame } from '../components/YarnBall'
+import { sound } from '../services/sound'
 
 interface Props {
   onNext: () => void
@@ -37,6 +38,7 @@ export function WelcomeScene({ onNext }: Props) {
           className="relative block h-[min(30dvh,15.5rem)] aspect-[4/5] rounded-[2rem]"
           whileTap={{ scale: 0.95 }}
           onClick={(e) => {
+            sound.playPurr()
             burst(e, { kind: 'hearts', count: 5 })
             setMood('happy')
             window.clearTimeout(moodTimer.current)
@@ -55,6 +57,7 @@ export function WelcomeScene({ onNext }: Props) {
           animate={ballKey ? { y: [0, -34, 0, -10, 0], rotate: [0, -50, 20, -8, 0] } : undefined}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           onClick={(e) => {
+            sound.playPop()
             burst(e, { kind: 'sparkle', count: 5 })
             setBallKey((k) => k + 1)
           }}

@@ -7,6 +7,7 @@ import { PillButton } from '../components/PillButton'
 import { SceneShell } from '../components/SceneShell'
 import { SecretStar } from '../components/SecretStar'
 import { useBurst } from '../components/BurstProvider'
+import { sound } from '../services/sound'
 
 interface Props {
   onNext: () => void
@@ -50,6 +51,7 @@ export function LetterScene({ onNext }: Props) {
   const open = () => {
     if (phase !== 'closed') return
     const later = (fn: () => void, ms: number) => timers.current.push(window.setTimeout(fn, ms))
+    sound.playRustle()
     setPhase('breaking')
     burst(envRef.current, { kind: 'sparkle', count: 6 })
     later(() => {

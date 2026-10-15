@@ -7,6 +7,7 @@ import { SecretStar } from '../components/SecretStar'
 import { VendingMachine, type MachineStatus } from '../components/VendingMachine'
 import { useBurst } from '../components/BurstProvider'
 import { HeartIcon, SparkleIcon } from '../components/Shapes'
+import { sound } from '../services/sound'
 import type { MouseEvent } from 'react'
 
 interface Props {
@@ -102,6 +103,7 @@ export function SerotoninScene({ onNext }: Props) {
     const malfunction = n > 1 && !lastWasMalfunction.current && Math.random() < 0.13
     lastWasMalfunction.current = malfunction
 
+    sound.playVending()
     burst(e, { kind: 'sparkle', count: 5 })
     setStatus(malfunction ? 'error' : 'busy')
     shake.start(

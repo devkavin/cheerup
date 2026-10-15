@@ -8,6 +8,9 @@ import { SceneShell } from '../components/SceneShell'
 import { SecretStar } from '../components/SecretStar'
 import { useBurst } from '../components/BurstProvider'
 import { HeartIcon, SparkleIcon } from '../components/Shapes'
+import { PolaroidKeepsake } from '../components/PolaroidKeepsake'
+import { Camera } from 'lucide-react'
+import { sound } from '../services/sound'
 
 type Phase = 'stitching' | 'finished' | 'hugging'
 
@@ -20,6 +23,7 @@ export function CrochetScene() {
   const [phase, setPhase] = useState<Phase>('stitching')
   const [reveal, setReveal] = useState(0)
   const [hugs, setHugs] = useState(0)
+  const [showPolaroid, setShowPolaroid] = useState(false)
   const stageRef = useRef<HTMLDivElement>(null)
   const endRef = useRef<HTMLDivElement>(null)
   const timers = useRef<number[]>([])
@@ -40,11 +44,15 @@ export function CrochetScene() {
     rowsRef.current = n
     setRows(n)
     setTapKey((k) => k + 1)
+    sound.playPop()
     burst(e, { kind: 'sparkle', count: 3 })
 
     if (n === TOTAL_ROWS) {
       setPhase('finished')
-      later(() => burst(stageRef.current, { kind: 'hearts', count: 14 }), 700)
+      later(() => {
+        sound.playHug()
+        burst(stageRef.current, { kind: 'hearts', count: 14 })
+      }, 700)
       later(() => burst(stageRef.current, { kind: 'sparkle', count: 10 }), 1300)
       later(() => setPhase('hugging'), 2300)
     }
@@ -53,6 +61,7 @@ export function CrochetScene() {
   // Once the hug appears, reveal the three messages one after another.
   useEffect(() => {
     if (phase !== 'hugging') return
+    sound.playHug()
     burst(stageRef.current, { kind: 'hearts', count: 16 })
     burst(stageRef.current, { kind: 'sparkle', count: 10 })
     if (reduced) {
@@ -73,6 +82,7 @@ export function CrochetScene() {
 
   const hug = (e: MouseEvent<HTMLButtonElement>) => {
     setHugs((h) => h + 1)
+    sound.playHug()
     burst(e, { kind: 'hearts', count: 9 })
     burst(stageRef.current, { kind: 'hearts', count: 12 })
     later(() => burst(stageRef.current, { kind: 'sparkle', count: 8 }), 350)
@@ -199,9 +209,22 @@ export function CrochetScene() {
             aria-hidden={reveal < 4}
             className="flex flex-col items-center gap-3 pt-1"
           >
-            <PillButton variant="soft" burstKind="sparkle" burstCount={6} onClick={hug} tabIndex={reveal >= 4 ? 0 : -1}>
-              {content.crochet.hugButton}
-            </PillButton>
+            <div className="flex flex-wrap items-center justify-center gap-2.5">
+              <PillButton variant="soft" burstKind="sparkle" burstCount={6} onClick={hug} tabIndex={reveal >= 4 ? 0 : -1}>
+                {content.crochet.hugButton}
+              </PillButton>
+              <PillButton
+                variant="primary"
+                burstKind="confetti"
+                burstCount={12}
+                onClick={() => setShowPolaroid(true)}
+                tabIndex={reveal >= 4 ? 0 : -1}
+                className="gap-1.5"
+              >
+                <Camera className="h-4 w-4" />
+                <span>Save Keepsake Polaroid 📸</span>
+              </PillButton>
+            </div>
             <div className="flex h-8 items-center" aria-live="polite">
               <AnimatePresence mode="wait">
                 {hugs > 0 && (
@@ -224,6 +247,7 @@ export function CrochetScene() {
           <div ref={endRef} className="h-px w-full" />
         </div>
       )}
+      <PolaroidKeepsake isOpen={showPolaroid} onClose={() => setShowPolaroid(false)} />
     </SceneShell>
   )
 }
