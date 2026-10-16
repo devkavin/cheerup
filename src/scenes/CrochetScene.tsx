@@ -44,7 +44,7 @@ export function CrochetScene() {
     rowsRef.current = n
     setRows(n)
     setTapKey((k) => k + 1)
-    sound.playPop()
+    sound.playPop(n - 1)
     burst(e, { kind: 'sparkle', count: 3 })
 
     if (n === TOTAL_ROWS) {

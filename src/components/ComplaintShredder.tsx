@@ -34,8 +34,8 @@ export function ComplaintShredder({ isOpen, onClose }: ComplaintShredderProps) {
     window.setTimeout(() => {
       setIsShredding(false)
       setShredded(true)
-      burst(e, { kind: 'hearts', count: 12 })
-    }, 1200)
+      burst(e, { kind: 'hearts', count: 14 })
+    }, 1250)
   }
 
   const reset = () => {
@@ -56,20 +56,27 @@ export function ComplaintShredder({ isOpen, onClose }: ComplaintShredderProps) {
             className="absolute inset-0 bg-cocoa/30 backdrop-blur-xs"
           />
 
-          {/* Modal Card */}
+          {/* Handcrafted Modal Card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 15 }}
             transition={{ type: 'spring', stiffness: 350, damping: 24 }}
-            className="soft-shadow relative z-10 w-full max-w-sm rounded-[2rem] border-2 border-white bg-cream p-6 text-center text-cocoa"
+            className="soft-shadow relative z-10 w-full max-w-sm rounded-[2.2rem] border-2 border-white bg-[#fffdfa] p-6 text-center text-cocoa"
           >
+            {/* Washi tape at top */}
+            <span
+              aria-hidden="true"
+              className="absolute -top-3 left-1/2 h-5 w-24 -translate-x-1/2 -rotate-1 rounded-xs bg-[#f8c8d6]/95 shadow-xs border-y border-white/60"
+              style={{ backgroundImage: 'repeating-linear-gradient(135deg, rgba(255,255,255,.5) 0 4px, transparent 4px 8px)' }}
+            />
+
             {/* Close Button */}
             <button
               type="button"
               onClick={onClose}
               aria-label="Close shredder"
-              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-white/80 text-cocoa/60 hover:text-cocoa"
+              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-white/80 text-cocoa/60 hover:text-cocoa transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
@@ -93,10 +100,10 @@ export function ComplaintShredder({ isOpen, onClose }: ComplaintShredderProps) {
                         onClick={() => {
                           setSelected(g)
                           setCustomText('')
-                          sound.playChime(600, 0.15)
+                          sound.playNote(587.33, 0.25, 0.14)
                         }}
                         className={`w-full rounded-xl border px-3 py-2 text-left text-xs font-medium transition-all ${
-                          selected === g && !customText ? 'border-berry bg-rose/20 text-berry-deep' : 'border-rose/30 bg-white/60 hover:bg-white'
+                          selected === g && !customText ? 'border-berry bg-rose/20 text-berry-deep shadow-xs' : 'border-rose/30 bg-white/70 hover:bg-white'
                         }`}
                       >
                         {g}
@@ -116,13 +123,13 @@ export function ComplaintShredder({ isOpen, onClose }: ComplaintShredderProps) {
                 </div>
 
                 {/* Shredder animation view */}
-                <div className="relative mt-2 flex h-14 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-rose/40 bg-white/50">
+                <div className="relative mt-2 flex h-14 items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-rose/40 bg-white/60">
                   <AnimatePresence>
                     {isShredding ? (
                       <motion.div
                         key="active-shred"
                         initial={{ y: 0 }}
-                        animate={{ y: 45 }}
+                        animate={{ y: 48 }}
                         transition={{ duration: 1.1, ease: 'linear' }}
                         className="flex flex-col items-center"
                       >
@@ -131,7 +138,7 @@ export function ComplaintShredder({ isOpen, onClose }: ComplaintShredderProps) {
                         </div>
                         <div className="mt-1 flex gap-1">
                           {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-                            <div key={i} className="h-6 w-1 rounded-full bg-berry opacity-70" />
+                            <div key={i} className="h-6 w-1 rounded-full bg-berry opacity-75" />
                           ))}
                         </div>
                       </motion.div>
@@ -149,14 +156,14 @@ export function ComplaintShredder({ isOpen, onClose }: ComplaintShredderProps) {
                 </PillButton>
               </div>
             ) : (
-              /* Stamped Receipt */
+              /* Hand-Stamped Voided Receipt */
               <motion.div
                 initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="mt-4 space-y-3"
               >
                 <div className="soft-shadow relative overflow-hidden rounded-2xl border-2 border-dashed border-berry bg-[#fffaf8] p-4 text-center">
-                  <span className="font-hand inline-block -rotate-6 rounded-md border-2 border-berry px-3 py-0.5 text-lg font-bold text-berry">
+                  <span className="font-hand inline-block -rotate-6 rounded-md border-2 border-dashed border-berry bg-rose/10 px-3 py-0.5 text-lg font-bold text-berry">
                     VOIDED & SHREDDED
                   </span>
                   <p className="mt-3 text-xs font-medium text-cocoa">

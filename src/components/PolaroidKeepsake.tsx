@@ -52,6 +52,18 @@ export function PolaroidKeepsake({ isOpen, onClose }: PolaroidProps) {
     ctx.lineWidth = 2
     ctx.strokeRect(px, py, pw, ph)
 
+    // Washi tape accent on top photo edge
+    ctx.save()
+    ctx.translate(W / 2, py + 2)
+    ctx.rotate(-0.018)
+    ctx.fillStyle = '#F8C8D6'
+    ctx.fillRect(-65, -10, 130, 20)
+    ctx.strokeStyle = '#FFFFFF'
+    ctx.lineWidth = 1.5
+    ctx.setLineDash([4, 4])
+    ctx.strokeRect(-65, -10, 130, 20)
+    ctx.restore()
+
     // Hearts floating in photo background
     ctx.fillStyle = 'rgba(217, 155, 170, 0.35)'
     const heartPoints = [
@@ -246,8 +258,14 @@ export function PolaroidKeepsake({ isOpen, onClose }: PolaroidProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 15 }}
             transition={{ type: 'spring', stiffness: 350, damping: 24 }}
-            className="soft-shadow relative z-10 w-full max-w-sm rounded-[2.2rem] border-2 border-white bg-cream p-5 text-center text-cocoa"
+            className="soft-shadow relative z-10 w-full max-w-sm rounded-[2.2rem] border-2 border-white bg-[#fffdfa] p-5 text-center text-cocoa"
           >
+            {/* Washi tape at top */}
+            <span
+              aria-hidden="true"
+              className="absolute -top-3 left-1/2 h-5 w-24 -translate-x-1/2 -rotate-1 rounded-xs bg-[#f8c8d6]/95 shadow-xs border-y border-white/60"
+              style={{ backgroundImage: 'repeating-linear-gradient(135deg, rgba(255,255,255,.5) 0 4px, transparent 4px 8px)' }}
+            />
             <button
               type="button"
               onClick={onClose}

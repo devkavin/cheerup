@@ -92,6 +92,10 @@ export function WelcomeScene({ onNext }: Props) {
           {content.welcome.button}
         </PillButton>
       </motion.div>
+
+      <motion.p {...rise(0.56)} className="font-hand text-sm sm:text-base text-berry/75 flex items-center justify-center gap-1.5 pt-0.5">
+        <span>♪ cozy music box sounds available on the top ribbon</span>
+      </motion.p>
     </SceneShell>
   )
 }

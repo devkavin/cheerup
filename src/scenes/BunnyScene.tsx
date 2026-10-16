@@ -110,10 +110,16 @@ export function BunnyScene({ onNext }: Props) {
   }, [])
 
   const handlePat = (e: MouseEvent<HTMLButtonElement>) => {
-    sound.playPurr()
     const n = patsRef.current + 1
     patsRef.current = n
     setPats(n)
+
+    const special = n === content.bunny.secretTapsNeeded
+    if (special) {
+      sound.playSincereLullaby()
+    } else {
+      sound.playPurr()
+    }
 
     // Taps 1-6 are the fixed script. Tap 6 is never random.
     let text: string
@@ -127,7 +133,6 @@ export function BunnyScene({ onNext }: Props) {
       lastExtra.current = text
       nextMood = pick(RANDOM_MOODS)
     }
-    const special = n === content.bunny.secretTapsNeeded
 
     setBubble({ id: n, text, special })
     setMood(nextMood)
@@ -211,25 +216,29 @@ export function BunnyScene({ onNext }: Props) {
         <AnimatePresence>{pats === content.bunny.secretTapsNeeded && <HeartSparkle key="sparkle" />}</AnimatePresence>
       </div>
 
-      {/* Wardrobe accessories bar */}
+      {/* Wardrobe sewing tray bar */}
       <div className="flex flex-col items-center gap-1">
-        <div className="flex items-center justify-center gap-1.5 rounded-full border border-rose/30 bg-cream/80 px-2 py-1 shadow-xs backdrop-blur-xs">
-          <span className="font-hand pr-1 text-sm font-semibold text-berry-deep">Wardrobe:</span>
+        <div className="flex items-center justify-center gap-1.5 rounded-full border-2 border-white/90 bg-gradient-to-r from-cream/90 via-[#fdf4f7]/90 to-cream/90 px-3 py-1 shadow-[0_4px_12px_-4px_rgba(181,86,111,0.25)] backdrop-blur-xs">
+          <span className="font-hand pr-1 text-base font-semibold text-berry-deep">Wardrobe:</span>
           {WARDROBE_ITEMS.map((item) => {
             const isSelected = accessory === item.id
             return (
-              <button
+              <motion.button
                 key={item.id}
                 type="button"
+                whileHover={{ scale: 1.15 }}
+                whileTap={{ scale: 0.9 }}
                 onClick={(e) => handleDressUp(item, e)}
                 aria-label={`Dress with ${item.label}`}
                 title={item.label}
-                className={`flex h-7 w-7 items-center justify-center rounded-full text-sm transition-all ${
-                  isSelected ? 'bg-berry text-white shadow-xs scale-110' : 'bg-white/60 hover:bg-rose/30 opacity-80'
+                className={`flex h-8 w-8 items-center justify-center rounded-full text-base transition-all ${
+                  isSelected
+                    ? 'bg-gradient-to-b from-[#b5566f] to-[#9e465e] text-white shadow-[0_3px_8px_-2px_rgba(143,63,87,0.5)] scale-110 border border-white'
+                    : 'bg-white/75 hover:bg-white text-cocoa shadow-xs opacity-85'
                 }`}
               >
                 {item.icon}
-              </button>
+              </motion.button>
             )
           })}
         </div>
@@ -241,7 +250,7 @@ export function BunnyScene({ onNext }: Props) {
           initial={pats ? { scale: 1.25 } : false}
           animate={{ scale: 1 }}
           transition={{ type: 'spring', stiffness: 400, damping: 12 }}
-          className="inline-flex items-center gap-1.5 rounded-full bg-cream/80 px-4 py-1.5 text-[1.05rem] font-medium text-berry-deep"
+          className="inline-flex items-center gap-1.5 rounded-full border-2 border-white/80 bg-cream/90 px-4 py-1.5 text-[1.05rem] font-medium text-berry-deep shadow-[0_4px_12px_-4px_rgba(181,86,111,0.2)]"
           aria-live="polite"
         >
           {content.bunny.counter(pats)}

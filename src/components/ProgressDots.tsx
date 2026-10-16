@@ -13,12 +13,12 @@ export function ProgressDots({ current, furthest, onSelect }: ProgressDotsProps)
   return (
     <nav
       aria-label="Story progress"
-      className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center pt-[max(0.75rem,env(safe-area-inset-top))]"
+      className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center pt-[max(0.4rem,env(safe-area-inset-top))]"
     >
-      <ol className="pointer-events-auto relative flex items-center rounded-full border-2 border-white/80 bg-cream/85 px-1.5 sm:px-2 shadow-[0_8px_18px_-8px_rgba(181,86,111,0.4)] backdrop-blur-sm">
+      <ol className="pointer-events-auto relative flex h-8 sm:h-9 items-center rounded-b-xl border-x-2 border-b-2 border-white/90 bg-gradient-to-b from-cream/95 to-[#fdf6fa]/95 px-2 sm:px-3 shadow-[0_6px_14px_-4px_rgba(181,86,111,0.28),inset_0_-2px_0_rgba(217,155,170,0.25)] backdrop-blur-xs">
         <span
           aria-hidden="true"
-          className="absolute left-5 right-5 top-1/2 -translate-y-1/2 border-t-2 border-dashed border-rose/60"
+          className="absolute left-4 right-4 top-1/2 -translate-y-1/2 border-t border-dashed border-rose/60"
         />
         {content.sceneNames.map((name, i) => {
           const reachable = i <= furthest

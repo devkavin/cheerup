@@ -27,7 +27,7 @@ export function PillButton({
       whileTap={{ y: 5, scale: 0.97, transition: { duration: 0.06 } }}
       onClick={(e) => {
         sound.vibrate(10)
-        sound.playChime(659.25, 0.25)
+        sound.playButtonTap()
         if (burstKind) burst(e, { kind: burstKind, count: burstCount })
         onClick?.(e)
       }}

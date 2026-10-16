@@ -28,7 +28,7 @@ export function ComfortDrawer({ isOpen, onClose }: ComfortDrawerProps) {
       sound.playPop()
       burst(e, { kind: 'sparkle', count: 6 })
     } else {
-      sound.playChime(400, 0.1)
+      sound.playButtonTap()
     }
   }
 
@@ -51,13 +51,20 @@ export function ComfortDrawer({ isOpen, onClose }: ComfortDrawerProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 15 }}
             transition={{ type: 'spring', stiffness: 350, damping: 24 }}
-            className="soft-shadow relative z-10 w-full max-w-sm rounded-[2rem] border-2 border-white bg-cream p-6 text-center text-cocoa"
+            className="soft-shadow relative z-10 w-full max-w-sm rounded-[2.2rem] border-2 border-white bg-[#fffdfa] p-6 text-center text-cocoa"
           >
+            {/* Washi tape at top */}
+            <span
+              aria-hidden="true"
+              className="absolute -top-3 left-1/2 h-5 w-24 -translate-x-1/2 rotate-1 rounded-xs bg-[#ffe5d4]/95 shadow-xs border-y border-white/60"
+              style={{ backgroundImage: 'repeating-linear-gradient(135deg, rgba(255,255,255,.5) 0 4px, transparent 4px 8px)' }}
+            />
+
             <button
               type="button"
               onClick={onClose}
               aria-label="Close comfort checklist"
-              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-white/80 text-cocoa/60 hover:text-cocoa"
+              className="absolute right-4 top-4 grid h-8 w-8 place-items-center rounded-full bg-white/80 text-cocoa/60 hover:text-cocoa transition-colors"
             >
               <X className="h-4 w-4" />
             </button>
@@ -79,16 +86,16 @@ export function ComfortDrawer({ isOpen, onClose }: ComfortDrawerProps) {
                     onClick={(e) => toggle(item.id, e)}
                     className={`flex w-full items-start gap-2.5 rounded-xl border p-2.5 text-xs font-medium transition-all ${
                       isDone
-                        ? 'border-berry/40 bg-rose/15 text-cocoa line-through opacity-85'
+                        ? 'border-berry/40 bg-rose/15 text-cocoa line-through opacity-85 shadow-xs'
                         : 'border-rose/25 bg-white/70 hover:bg-white text-cocoa'
                     }`}
                   >
                     <div
                       className={`mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-md border transition-colors ${
-                        isDone ? 'border-berry bg-berry text-white' : 'border-rose/50 bg-white'
+                        isDone ? 'border-berry bg-berry text-white shadow-xs' : 'border-rose/50 bg-white'
                       }`}
                     >
-                      {isDone && <Check className="h-3 w-3" />}
+                      {isDone && <Check className="h-3 w-3 stroke-[2.5]" />}
                     </div>
                     <span>{item.label}</span>
                   </button>
@@ -111,7 +118,7 @@ export function ComfortDrawer({ isOpen, onClose }: ComfortDrawerProps) {
             <button
               type="button"
               onClick={onClose}
-              className="mt-4 w-full rounded-full bg-berry px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-berry-deep"
+              className="mt-4 w-full rounded-full bg-berry px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-berry-deep transition-colors"
             >
               Close & Keep Being Awesome 🩷
             </button>

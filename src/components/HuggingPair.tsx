@@ -14,11 +14,16 @@ const MOUTH = '#a5536b'
 function Face({ blush = 1 }: { blush?: number }) {
   return (
     <g>
-      <ellipse cx={-29} cy={9} rx={9} ry={6} fill={CHEEK} opacity={0.85 * blush} />
-      <ellipse cx={29} cy={9} rx={9} ry={6} fill={CHEEK} opacity={0.85 * blush} />
-      <path d="M-24 1 Q-17 -10 -10 1 M10 1 Q17 -10 24 1" stroke={INK} strokeWidth={3.4} fill="none" strokeLinecap="round" />
+      <ellipse cx={-29} cy={9} rx={10} ry={6.5} fill={CHEEK} opacity={0.88 * blush} />
+      <ellipse cx={29} cy={9} rx={10} ry={6.5} fill={CHEEK} opacity={0.88 * blush} />
+      <g stroke="#e0607f" strokeWidth={1.4} strokeLinecap="round" opacity={0.6 * blush}>
+        <path d="M-33 11 l2 -4 M-28 11 l2 -4" />
+        <path d="M26 11 l2 -4 M31 11 l2 -4" />
+      </g>
+      <path d="M-25 1 Q-17 -11 -9 1 M9 1 Q17 -11 25 1" stroke={INK} strokeWidth={3.6} fill="none" strokeLinecap="round" />
       <ellipse cx={0} cy={7} rx={4.6} ry={3.4} fill="#e58ca0" />
-      <path d="M0 10 v3 M0 13 q-5 5 -10 1 M0 13 q5 5 10 1" stroke={MOUTH} strokeWidth={2.2} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <ellipse cx={-1} cy={6} rx={1.4} ry={1} fill="#fff" opacity={0.65} />
+      <path d="M0 10 v3.5 M0 13.5 q-5 4.5 -10 1 M0 13.5 q5 4.5 10 1" stroke={MOUTH} strokeWidth={2.4} fill="none" strokeLinecap="round" strokeLinejoin="round" />
     </g>
   )
 }

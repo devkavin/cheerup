@@ -122,9 +122,11 @@ export function CrochetedHeart({ rows, done, tapKey }: CrochetedHeartProps) {
     <svg viewBox={`0 0 ${STAGE_W} ${STAGE_H}`} className="h-full w-full" style={{ overflow: 'visible' }} role="img" aria-label={`A crocheted heart, ${rows} of ${TOTAL_ROWS} rows stitched`}>
       <defs>
         <g id="yarnStitch">
-          <path d="M-5.2 -4 L0 3.8 L5.2 -4" fill="none" stroke="#c4607c" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M-5.2 -4 L0 3.8 L5.2 -4" fill="none" stroke="currentColor" strokeWidth="4.7" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M-4.4 -4.2 L-0.6 2" fill="none" stroke="#fff" strokeOpacity="0.5" strokeWidth="1.5" strokeLinecap="round" />
+          <path d="M-5.2 -3.6 L0 4.2 L5.2 -3.6" fill="none" stroke="#a34862" strokeWidth="7.2" strokeLinecap="round" strokeLinejoin="round" opacity="0.25" />
+          <path d="M-5.2 -4 L0 3.8 L5.2 -4" fill="none" stroke="#c4607c" strokeWidth="6.8" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M-5.2 -4 L0 3.8 L5.2 -4" fill="none" stroke="currentColor" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M-4.2 -4.2 L-0.4 2.2" fill="none" stroke="#fff" strokeOpacity="0.65" strokeWidth="1.6" strokeLinecap="round" />
+          <path d="M4.2 -4.2 L1.2 0.8" fill="none" stroke="#fff" strokeOpacity="0.45" strokeWidth="1.2" strokeLinecap="round" />
         </g>
       </defs>
 
@@ -176,7 +178,7 @@ export function CrochetedHeart({ rows, done, tapKey }: CrochetedHeartProps) {
         />
       </motion.g>
 
-      {/* working yarn + hook */}
+      {/* working yarn + handcrafted hook */}
       <motion.g initial={false} animate={{ opacity: done ? 0 : 1 }} transition={{ duration: 0.5 }}>
         <motion.path
           fill="none"
@@ -189,9 +191,11 @@ export function CrochetedHeart({ rows, done, tapKey }: CrochetedHeartProps) {
         />
         <motion.g initial={false} animate={{ x: hook.x, y: hook.y }} transition={{ type: 'spring', stiffness: 140, damping: 15 }}>
           <g transform="rotate(-36)">
-            <rect x={0} y={-2.4} width={50} height={4.8} rx={2.4} fill="#cfc0e8" stroke="#a98fcf" strokeWidth={1.2} />
-            <rect x={48} y={-5} width={32} height={10} rx={5} fill="#b79ee0" stroke="#9577c4" strokeWidth={1.2} />
-            <path d="M0 -2.4 q-3.4 -0.4 -3.6 -4.6" fill="none" stroke="#a98fcf" strokeWidth={2.4} strokeLinecap="round" />
+            <rect x={0} y={-3} width={52} height={6} rx={3} fill="#e5c8af" stroke="#ad8062" strokeWidth={1.2} />
+            <line x1="14" y1="-3" x2="14" y2="3" stroke="#ad8062" strokeWidth={1} opacity="0.4" />
+            <line x1="28" y1="-3" x2="28" y2="3" stroke="#ad8062" strokeWidth={1} opacity="0.4" />
+            <rect x={48} y={-5.5} width={34} height={11} rx={5.5} fill="#cdb8ea" stroke="#a98fcf" strokeWidth={1.3} />
+            <path d="M0 -3 q-3.6 -0.4 -4 -4.8 q1 -1 2.2 -0.6" fill="none" stroke="#9e84c4" strokeWidth={2.8} strokeLinecap="round" strokeLinejoin="round" />
           </g>
         </motion.g>
       </motion.g>
