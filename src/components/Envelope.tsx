@@ -114,7 +114,7 @@ export function Envelope({ phase, onOpen }: EnvelopeProps) {
         <svg
           viewBox="0 0 320 140"
           className="absolute inset-0 h-full w-full"
-          style={{ backfaceVisibility: 'hidden', transform: 'rotateX(180deg)' }}
+          style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
           aria-hidden="true"
         >
           <path d="M3 18 Q3 3 18 3 H302 Q317 3 317 18 L168 132 Q160 138 152 132 Z" fill="#dd8fa6" stroke={SEAM} strokeWidth={3} strokeLinejoin="round" />
